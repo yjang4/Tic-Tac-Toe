@@ -1,6 +1,8 @@
 const game = () => {
     let board;
     let turn = "X";
+    let container = document.getElementById("container");
+    let isOver = false;
     function makeBoard() {
         board = new Array(3);
         for(i = 0; i < board.length; i ++) {
@@ -43,49 +45,73 @@ const game = () => {
             });
         }
     }
-    function checkWhoWon() {
-        // diagonal win
+    function isDiagonalWin() {
         if(board[0][0].state != "none" && board[1][1].state != "none" && board[2][2].state != "none" &&
         board[0][0].state == board[1][1].state 
             && board[1][1].state == board[2][2].state) {
-            sendVictoryMessage();
+            return true;
         }
-        // diagonal win
         else if(board[0][2].state != "none" && board[1][1].state != "none" && board[2][0].state != "none" &&
         board[0][2].state == board[1][1].state 
             && board[1][1].state == board[2][0].state) {
-            sendVictoryMessage();
+            return true;
         }
+        return false;
+    }
+    function isHorizontalWin() {
         for(i = 0; i < 3; i ++) {
             //horizontal win
             if(board[i][0].state != "none" && board[i][1].state != "none" && board[i][2].state != "none" &&
             board[i][0].state == board[i][1].state && 
                 board[i][1].state == board[i][2].state) {
-                sendVictoryMessage();
+                return true;
             }
-            //vertical win
-            else if(board[0][i].state != "none" && board[1][i].state != "none" && board[2][i].state != "none" &&
+        }
+        return false;
+    }
+    function isVerticalWin() {
+        for(i = 0; i < 3; i ++) {
+            if(board[0][i].state != "none" && board[1][i].state != "none" && board[2][i].state != "none" &&
             board[0][i].state == board[1][i].state && 
                 board[1][i].state == board[2][i].state) {
-                sendVictoryMessage();
+                return true;
             }
         }
-        //tie
-        for(i = 0; i < 3; i ++) {
-            for(j = 0; j < 3; j ++) {
-                
-            }
+        return false;
+    }
+    function isTie() {
+        if(isBoardFilled()) {
+            return true;
         }
-        
+    }
+    function checkWhoWon() {
+        if(isDiagonalWin() || isHorizontalWin() ||
+        isVerticalWin()) sendVictoryMessage(); 
+        else if(isTie()) sendTieMessage();
     }
     function sendVictoryMessage() {
+        isOver = true;
         let p = document.createElement("p");
-        let container = document.getElementById("container");
         let message;
         if(turn == "X") message = "Player 1 won!";
         else message = "Player 2 won!";
         p.textContent = message;
         container.appendChild(p);
+    }
+    function sendTieMessage() {
+        let p = document.createElement("p");
+        p.textContent = "Tie!";
+        container.appendChild(p);
+    }
+    function isBoardFilled() {
+        for(i = 0; i < 3; i ++) {
+            for(j = 0; j < 3; j ++) {
+                if(board[i][j].state == "none") {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     return {board, makeBoard, writeBoard, makeBoardClickable};
 };
