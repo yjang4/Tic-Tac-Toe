@@ -2,15 +2,22 @@
     background-color:aliceblue;
     padding: 0px;
     margin: 0px;
+    font-family: 'Courier New', Courier, monospace;
+    color:darkblue;
     
 }
-.container {
+p {
+    font-size: 48px;
+}
+#container {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 50px;
 }
-.grid {
+#grid {
     height: 400px;
     width: 400px;
     display: grid;
@@ -18,7 +25,15 @@
     grid-template-rows: 1fr 1fr 1fr;
     gap: 10px;
 }
-.cells {
+.cell {
     background-color: aquamarine;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ 
+}
+.cell-state {
+    font-size: 69px;
+    position: absolute;
+    background-color: aquamarine;
 }
